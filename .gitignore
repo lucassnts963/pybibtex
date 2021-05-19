@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Arquivos de testes
+test.py
+
+# Pasta de Arquivos .bib para os testes
+Bibtex
