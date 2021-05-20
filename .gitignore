@@ -130,6 +130,10 @@ dmypy.json
 
 # Arquivos de testes
 test.py
+test.csv
+
+# Pastas para os arquivos csvs criados com o metodo to_csv()
+csv
 
 # Pasta de Arquivos .bib para os testes
 Bibtex

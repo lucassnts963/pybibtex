@@ -40,13 +40,36 @@ regex_keys_values = re.compile(pattern_keys_values, flags=re.I | re.S | re.M | r
 
 class FileHandler:
   
-  def __init__ (self, filename):
+  def __init__ (self, filename, source_name):
     self.path = path.join('Bibtex', filename)
     self.entries = find_entries(self.path)
+    self.source = source_name
   
-  #TODO  
-  def to_csv(self):
-    pass
+  def to_csv(self, path):
+    entries = self.entries
+    
+    with open(path+'.csv', 'w', newline='',encoding='utf-8') as file:
+      
+      writer = csv.writer(file)
+      
+      cols_name = ['id','title', 'year', 'author', 'keywords', 'abstract', 'url', 'source']
+      
+      writer.writerow(cols_name)
+      
+      for id in entries:
+        title     = entries[id]['title']    if entries[id].get('title')     else 'no title'
+        year      = entries[id]['year']     if entries[id].get('year')      else 'no year'
+        author    = entries[id]['author']   if entries[id].get('author')    else 'no author'
+        keywords  = entries[id]['keywords'] if entries[id].get('keywords')  else 'no keywords'
+        abstract  = entries[id]['abstract'] if entries[id].get('abstract')  else 'no abstract'
+        url       = entries[id]['url']      if entries[id].get('url')       else 'no url'
+        source    = self.source
+        
+        row = [id, title, year, author, keywords, abstract, url, source]
+        
+        writer.writerow(row)
+        
+      
 
 
 # Function to get just id the from the match
@@ -77,7 +100,7 @@ def get_keys_values(article):
       
       for match in matches:
             key, value = match
-            key = key.replace('=', '').rstrip().lstrip()
+            key = key.replace('=', '').rstrip().lstrip().lower()
             if(value[0:2] == '{{'):
                   value = value[2:-2]
             else:
@@ -102,3 +125,5 @@ def find_entries(path):
         articles.append(article)
         
     return dict(articles)
+  
+  

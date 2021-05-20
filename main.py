@@ -1,13 +1,17 @@
-
+import os
 
 from pybibtex import FileHandler
 
 
-file = FileHandler('Scielo.bib')
+PATH = os.path.join('Bibtex')
 
-entries = file.entries
+files = os.listdir(PATH)
 
-for id in entries:
-  title = entries [id]['title']
-  
-  print (title)
+
+for file in files:
+    source = file.split('.')[0]
+    csv_dir = os.path.join('csv', source)
+    if not os.path.exists('csv'):
+        os.mkdir('csv')
+    f = FileHandler(file, source)
+    f.to_csv(csv_dir)
